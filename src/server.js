@@ -11,17 +11,29 @@ import errorHandler from './middleware/errorHandler.js';
 dotenv.config();
 const app = express();
 
-// Middleware
+
 app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
 
-// Routes
+
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/health', healthRoutes);
 
-// Error handler
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to the Task Manager API 🛠️',
+    status: 'Live',
+    routes: {
+      auth: '/api/auth',
+      tasks: '/api/tasks',
+      health: '/health'
+    }
+  });
+});
+
+
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
